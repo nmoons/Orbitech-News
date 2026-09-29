@@ -42,30 +42,18 @@
         * { box-sizing: border-box; }
 
         body {
-            margin: 0;
-            padding: 0 4%;
-            font-family: 'Inter', sans-serif;
-            color: var(--text-main);
+            margin: 0; padding: 0 4%;
+            font-family: 'Inter', sans-serif; color: var(--text-main);
             background: linear-gradient(165deg, var(--c-top) 0%, var(--c-mid) 45%, var(--c-base) 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            overflow-x: hidden;
+            background-attachment: fixed; min-height: 100vh; overflow-x: hidden;
             transition: background 0.15s ease-out;
         }
 
         /* --- CLEAN CELESTIAL SPLASH SCREEN --- */
         #splash-screen {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at center, #0a0d18 0%, #030508 100%);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 32px;
-            overflow: hidden;
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+            position: fixed; inset: 0; background: radial-gradient(circle at center, #0a0d18 0%, #030508 100%);
+            z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 32px; overflow: hidden; transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
         }
         .celestial-wheel-wrap { position: relative; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center; }
         .celestial-wheel { position: absolute; width: 180px; height: 180px; animation: rotateSky 3.2s linear infinite; }
@@ -83,7 +71,7 @@
         .splash-status { font-size: 11px; color: #94a3b8; letter-spacing: 2px; text-transform: uppercase; animation: pulseStatus 1.5s ease-in-out infinite; z-index: 10; }
         @keyframes pulseStatus { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-        /* --- CELESTIAL BACKGROUND (Stars) --- */
+        /* --- CELESTIAL BACKGROUND ELEMENTS (Stars) --- */
         .stars-canvas-1 {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;
             opacity: calc(1 - (var(--scroll-num) * 2.2));
@@ -155,40 +143,95 @@
             pointer-events: none; background: linear-gradient(to bottom, var(--c-top) 30%, transparent 100%);
         }
 
-        /* --- "OPENING BOOK" HOVER EFFECTS --- */
+        /* --- HOVER EFFECTS --- */
         .eclipse-btn { transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
         .eclipse-btn:hover {
             background: #0b0e17 !important; color: #fbbf24 !important; border-color: #fbbf24 !important;
             box-shadow: 0 0 12px rgba(251, 191, 36, 0.6), inset 0 0 8px rgba(251, 191, 36, 0.2); transform: scale(1.05);
         }
 
+        /* Standard Base Card Effects (For Bookmarks & Course Cards) */
         .book-hover-card {
             background: var(--card-surface); border: 1px solid var(--card-border); 
             border-radius: 16px; position: relative; backdrop-filter: blur(20px); 
             overflow: hidden; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
-            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
         }
         
-        .headline-card.book-hover-card {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), inset 0 1px 12px rgba(255,255,255,0.05);
-        }
-
+        /* Standard Center-Expanding Highlight */
         .book-hover-card::before {
             content: ''; position: absolute; inset: 0;
             background: color-mix(in srgb, var(--c-sweep) 40%, rgba(255,255,255,0.08)); 
-            transform: scaleX(0);
-            transform-origin: center;
+            transform: scaleX(0); transform-origin: center; 
             transition: transform 0.65s ease-in-out;
             z-index: 0; pointer-events: none;
         }
         .book-hover-card:hover {
+            transform: translateY(-3px);
             border-color: rgba(255, 255, 255, 0.3);
             box-shadow: 0 16px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.05);
         }
         .book-hover-card:hover::before { transform: scaleX(1); }
         .book-hover-card > * { position: relative; z-index: 1; }
+
+        /* ==============================================================
+           THE HEADLINER: UNIFORM RECTANGLE + LOADING SWEEP ANIMATION
+           ============================================================== */
+        
+        .headline-card { 
+            padding: 28px 28px 28px 48px; /* Extra left padding allows space for the inner drawing border */
+            flex-grow: 1; display: flex; flex-direction: column; justify-content: center; height: 100%; 
+        }
+
+        .headline-card.book-hover-card {
+            background: rgba(255, 255, 255, 0.08); /* Lighter & More Prominent Base */
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), inset 0 1px 12px rgba(255,255,255,0.05);
+            overflow: visible; /* Prevents the inner border from being clipped during animation */
+        }
+        
+        .headline-card.book-hover-card:hover {
+            border-color: rgba(255, 255, 255, 0.18); /* Disable outer border flash */
+            transform: translateY(-3px);
+        }
+
+        /* 1. The Background Loading Sweep (Moves Left to Right) */
+        .headline-card.book-hover-card::before {
+            transform-origin: left center; /* Overrides the default center origin */
+            transition: transform 0.65s ease-in-out;
+            border-radius: 16px; /* Matches the outer card curvature */
+        }
+
+        /* 2. The Uniform Inner Drawing Rectangle Border */
+        .headline-card.book-hover-card::after {
+            content: '';
+            position: absolute;
+            top: 14px; bottom: 14px; left: 14px; right: 14px; /* Perfectly uniform space on all 4 sides */
+            border: 3px solid var(--c-accent); /* Uniform thickness on all sides */
+            border-radius: 8px;
+            
+            /* Base State: Full height vertical line, visibly clipped to only show the left 3px */
+            clip-path: inset(0 calc(100% - 3px) 0 0); 
+            pointer-events: none;
+            z-index: 2;
+            transition: clip-path 0.65s ease-in-out;
+        }
+        
+        .headline-card.book-hover-card:hover::after {
+            /* On hover, unclip the right side to reveal the full uniform rectangle synchronously with the loading bar */
+            clip-path: inset(0 0 0 0);
+        }
+
+        /* Text Layering Constraints */
+        #hero-headline { 
+            color: var(--text-main); font-size: 2.2rem; font-weight: 800; line-height: 1.15; 
+            margin-bottom: 14px; transition: color 0.15s; letter-spacing: -0.5px; overflow-wrap: break-word;
+            position: relative; z-index: 3; /* Keeps text above the sweeping background and borders */
+        }
+        .headline-snippet { 
+            font-size: 14.5px; color: var(--text-main); opacity: 0.85; line-height: 1.6; margin: 0; 
+            position: relative; z-index: 3; 
+        }
         
         .card-link-wrapper { text-decoration: none; color: inherit; display: block; height: 100%; }
         .card-link-wrapper:hover .news-title { color: var(--day-accent); }
@@ -230,7 +273,6 @@
         /* --- LAYOUT & PANELS --- */
         .workspace { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: start; }
         
-        /* Desktop: Strict 2/3 and 1/3 Ratio */
         .left-panel { 
             position: sticky; top: 68px; height: calc(100vh - 84px); 
             display: grid; grid-template-rows: 2fr 1fr; gap: 16px;
@@ -240,15 +282,6 @@
         .hero-container { display: flex; flex-direction: column; justify-content: flex-start; min-height: 0; height: 100%; }
         .hero-title { font-size: 3.4rem; line-height: 1.04; margin: 0 0 10px 0; font-weight: 800; letter-spacing: -2px; color: var(--c-accent); text-shadow: 0 4px 24px rgba(0, 0, 0, 0.4); transition: color 0.15s ease-out; overflow-wrap: break-word; }
         .hero-subtitle { font-size: 0.95rem; color: var(--text-muted); margin: 0 0 12px 0; }
-
-        .headline-card { padding: 28px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; height: 100%; }
-        
-        #hero-headline { 
-            color: var(--text-main); font-size: 2.2rem; font-weight: 800; line-height: 1.15; 
-            border-left: 5px solid var(--c-accent); padding-left: 18px; margin-bottom: 14px; 
-            transition: color 0.15s; letter-spacing: -0.5px; overflow-wrap: break-word;
-        }
-        .headline-snippet { font-size: 14.5px; color: var(--text-main); opacity: 0.85; line-height: 1.6; margin: 0; padding-left: 23px; }
 
         /* Read Later Bookmarks */
         .read-later-box {
@@ -304,13 +337,13 @@
             max-height: 320px; 
             overflow-y: auto; 
             overflow-x: hidden;
-            padding: 6px 4px;
+            padding: 12px 4px; 
+            margin: -12px -4px; 
         }
         .course-grid::-webkit-scrollbar { width: 4px; }
         .course-grid::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
         .course-card { padding: 14px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; }
         
-        /* Fixed to 1 / -1 so it never forces phantom 2nd column on single-column layouts */
         .trending-header { grid-column: 1 / -1; font-size: 11px; font-weight: 700; color: #fbbf24; letter-spacing: 1px; text-transform: uppercase; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
         
         .course-meta-tags { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
@@ -384,7 +417,6 @@
         
         .tag-badge { font-size: 9.5px; font-weight: 700; background: rgba(255, 255, 255, 0.08); padding: 3px 9px; border-radius: 50px; display: inline-block; margin-bottom: 10px; letter-spacing: 0.5px; }
         
-        /* Padding-right prevents collision with the Save button on small screens */
         .news-title { margin: 0 0 8px 0; font-size: 1.18rem; line-height: 1.35; color: var(--text-main); transition: color 0.2s; padding-right: 64px; }
         .news-desc { font-size: 12.5px; color: var(--text-muted); margin: 0 0 12px 0; line-height: 1.5; }
         .news-meta { font-size: 11.5px; color: var(--c-accent); font-weight: 600; }
@@ -396,7 +428,7 @@
 
         .error-card { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; padding: 14px; border-radius: 12px; font-size: 12.5px; display: none; }
 
-        /* --- RESPONSIVE MOBILE & MINIMIZED WINDOW LAYOUT (< 960px) --- */
+        /* --- RESPONSIVE MOBILE & MINIMIZED WINDOW LAYOUT --- */
         @media (max-width: 960px) {
             body { padding: 0 3%; }
             .navbar { border-radius: 50px; padding: 6px 14px; }
@@ -405,7 +437,6 @@
             
             .workspace { grid-template-columns: 1fr; gap: 32px; }
             
-            /* CRITICAL FIX: Forces stacked column rather than side-by-side row on minimized windows */
             .left-panel { 
                 position: static; 
                 height: auto; 
@@ -416,7 +447,10 @@
             }
             
             .hero-title { font-size: 2.5rem; letter-spacing: -1px; }
-            .headline-card { padding: 22px 20px; min-height: auto; }
+            
+            .headline-card { padding: 22px 20px 22px 36px; min-height: auto; }
+            .headline-card.book-hover-card::after { left: 12px; top: 12px; bottom: 12px; right: 12px; }
+            
             #hero-headline { font-size: 1.7rem !important; }
             
             .read-later-box { 
@@ -432,14 +466,12 @@
             .sun-wrapper { bottom: -180px; left: calc(50% - 180px); width: 360px; height: 360px; }
         }
 
-        /* Tablet to Small Mobile Breakpoint (< 620px) */
         @media (max-width: 620px) {
             .course-grid { grid-template-columns: 1fr; }
             .controls-row { flex-direction: column; align-items: flex-start; border-radius: 20px; padding: 12px; gap: 10px; }
             .chip-group { width: 100%; justify-content: flex-start; }
         }
 
-        /* Ultra-compact Phones (< 440px) */
         @media (max-width: 440px) {
             body { padding: 0 2.5%; }
             .navbar { padding: 6px 12px; }
