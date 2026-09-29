@@ -67,73 +67,23 @@
             overflow: hidden;
             transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
         }
-
-        .celestial-wheel-wrap {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .celestial-wheel {
-            position: absolute;
-            width: 180px;
-            height: 180px;
-            animation: rotateSky 3.2s linear infinite;
-        }
-
-        @keyframes rotateSky {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
+        .celestial-wheel-wrap { position: relative; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center; }
+        .celestial-wheel { position: absolute; width: 180px; height: 180px; animation: rotateSky 3.2s linear infinite; }
+        @keyframes rotateSky { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
         .glowing-sun {
-            position: absolute;
-            top: -24px;
-            left: calc(50% - 24px);
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: #ffb703;
-            box-shadow: 0 0 0 2px #fff3b0, 0 0 20px #fb8500, 0 0 45px #ffb703, 0 0 70px rgba(251, 133, 0, 0.60);
+            position: absolute; top: -24px; left: calc(50% - 24px); width: 48px; height: 48px;
+            border-radius: 50%; background: #ffb703; box-shadow: 0 0 0 2px #fff3b0, 0 0 20px #fb8500, 0 0 45px #ffb703, 0 0 70px rgba(251, 133, 0, 0.65);
         }
-
         .glowing-moon {
-            position: absolute;
-            bottom: -20px;
-            left: calc(50% - 20px);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #e0e7ff;
-            box-shadow: 0 0 0 2px #ffffff, 0 0 16px #c7d2fe, 0 0 35px rgba(199, 210, 254, 0.85), 0 0 55px rgba(165, 180, 252, 0.45);
+            position: absolute; bottom: -20px; left: calc(50% - 20px); width: 40px; height: 40px;
+            border-radius: 50%; background: #e0e7ff; box-shadow: 0 0 0 2px #ffffff, 0 0 16px #c7d2fe, 0 0 35px rgba(199, 210, 254, 0.85), 0 0 55px rgba(165, 180, 252, 0.45);
         }
+        .splash-brand { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; color: #f8fafc; z-index: 10; }
+        .splash-status { font-size: 11px; color: #94a3b8; letter-spacing: 2px; text-transform: uppercase; animation: pulseStatus 1.5s ease-in-out infinite; z-index: 10; }
+        @keyframes pulseStatus { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-        .splash-brand {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: #f8fafc;
-            z-index: 10;
-        }
-
-        .splash-status {
-            font-size: 11px;
-            color: #94a3b8;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            animation: pulseStatus 1.5s ease-in-out infinite;
-            z-index: 10;
-        }
-
-        @keyframes pulseStatus {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        /* --- CELESTIAL BACKGROUND ELEMENTS --- */
+        /* --- CELESTIAL BACKGROUND (Stars) --- */
         .stars-canvas-1 {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;
             opacity: calc(1 - (var(--scroll-num) * 2.2));
@@ -179,19 +129,23 @@
             border-radius: 50%; pointer-events: none; z-index: 1; opacity: 0; transform-origin: left center;
         }
 
-        /* Celestial Bodies */
+        /* --- REALISTIC ORBITAL MECHANICS --- */
+        .celestial-stage {
+            position: fixed; bottom: -500px; left: 50%; width: 1400px; height: 1400px; margin-left: -700px; 
+            pointer-events: none; z-index: 0;
+            transform: rotate(calc(var(--scroll-num) * 180deg)); transition: transform 0.1s linear;
+        }
+
         .moon-wrapper {
-            position: fixed; top: -240px; left: 50%; transform: translateX(-50%) translateY(calc(var(--scroll-num) * 120px));
-            width: 480px; height: 480px; pointer-events: none; z-index: 0;
-            opacity: calc(1 - (var(--scroll-num) * 1.8)); transition: opacity 0.2s ease-out;
+            position: absolute; top: -240px; left: calc(50% - 240px); width: 480px; height: 480px;
+            transform: rotate(calc(var(--scroll-num) * -180deg)); opacity: calc(1 - (var(--scroll-num) * 1.5));
         }
         .moon-halo { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.4) 0%, rgba(203, 213, 225, 0.2) 45%, transparent 70%); filter: blur(40px); }
         .moon-core { position: absolute; inset: 50px; border-radius: 50%; background: radial-gradient(circle at 45% 45%, #ffffff 0%, #e2e8f0 45%, #94a3b8 85%); filter: blur(14px); box-shadow: inset -15px -15px 35px rgba(15, 23, 42, 0.5); }
 
         .sun-wrapper {
-            position: fixed; bottom: -360px; left: 50%; transform: translateX(-50%) translateY(calc((1 - var(--scroll-num)) * 220px));
-            width: 540px; height: 540px; pointer-events: none; z-index: 0;
-            opacity: calc((var(--scroll-num) - 0.2) * 1.5); transition: opacity 0.2s ease-out;
+            position: absolute; bottom: -270px; left: calc(50% - 270px); width: 540px; height: 540px;
+            transform: rotate(calc(var(--scroll-num) * -180deg)); opacity: calc(var(--scroll-num) * 1.5);
         }
         .sun-halo { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.6) 0%, rgba(234, 88, 12, 0.35) 48%, transparent 70%); filter: blur(45px); }
         .sun-core { position: absolute; inset: 60px; border-radius: 50%; background: radial-gradient(circle at 50% 45%, #f59e0b 0%, #ea580c 60%, #c2410c 100%); filter: blur(16px); }
@@ -201,18 +155,58 @@
             pointer-events: none; background: linear-gradient(to bottom, var(--c-top) 30%, transparent 100%);
         }
 
-        /* --- SOLID, THIN TOP NAV BAR --- */
+        /* --- "OPENING BOOK" HOVER EFFECTS --- */
+        .eclipse-btn { transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
+        .eclipse-btn:hover {
+            background: #0b0e17 !important; color: #fbbf24 !important; border-color: #fbbf24 !important;
+            box-shadow: 0 0 12px rgba(251, 191, 36, 0.6), inset 0 0 8px rgba(251, 191, 36, 0.2); transform: scale(1.05);
+        }
+
+        .book-hover-card {
+            background: var(--card-surface); border: 1px solid var(--card-border); 
+            border-radius: 16px; position: relative; backdrop-filter: blur(20px); 
+            overflow: hidden; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        
+        .headline-card.book-hover-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), inset 0 1px 12px rgba(255,255,255,0.05);
+        }
+
+        .book-hover-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: color-mix(in srgb, var(--c-sweep) 40%, rgba(255,255,255,0.08)); 
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.65s ease-in-out;
+            z-index: 0; pointer-events: none;
+        }
+        .book-hover-card:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 16px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+        .book-hover-card:hover::before { transform: scaleX(1); }
+        .book-hover-card > * { position: relative; z-index: 1; }
+        
+        .card-link-wrapper { text-decoration: none; color: inherit; display: block; height: 100%; }
+        .card-link-wrapper:hover .news-title { color: var(--day-accent); }
+        .card-link-wrapper:hover .course-name { color: var(--day-accent); }
+        .card-link-wrapper:hover #hero-headline { color: var(--day-accent) !important; }
+
+        /* --- SOLID TOP NAV BAR --- */
         .header-wrap { position: sticky; top: 0; z-index: 100; padding: 10px 0 4px 0; }
         .navbar {
             display: flex; justify-content: space-between; align-items: center; background: #ffffff;
             padding: 7px 20px; border-radius: 50px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); border: 1px solid rgba(0, 0, 0, 0.08);
+            gap: 12px;
         }
-
         .nav-brand {
             color: #090a10; font-weight: 800; font-size: 1.05rem; letter-spacing: -0.5px;
             display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0;
+            white-space: nowrap;
         }
-
         .nav-celestial-logo {
             width: 20px; height: 20px; border-radius: 50%; position: relative;
             background: color-mix(in srgb, #f59e0b var(--scroll-pct), #cbd5e1);
@@ -224,10 +218,10 @@
             background: radial-gradient(circle at 65% 35%, transparent 40%, rgba(15, 23, 42, 0.35) 70%);
             opacity: calc(1 - var(--scroll-num) * 1.5);
         }
-
         .search-container {
             display: flex; align-items: center; background: #f1f5f9; border: 1px solid #cbd5e1;
             border-radius: 50px; padding: 0 12px; height: 32px; width: 220px; transition: all 0.2s;
+            flex-shrink: 1; min-width: 110px;
         }
         .search-container:focus-within { background: #ffffff; border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); width: 250px; }
         .search-icon { width: 14px; height: 14px; color: #64748b; flex-shrink: 0; margin-right: 8px; }
@@ -236,37 +230,35 @@
         /* --- LAYOUT & PANELS --- */
         .workspace { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: start; }
         
-        .left-panel { position: sticky; top: 68px; height: calc(100vh - 84px); display: flex; flex-direction: column; gap: 16px; padding-bottom: 16px; }
-        .hero-container { flex: 2; display: flex; flex-direction: column; justify-content: flex-start; min-height: 0; }
-        .hero-title { font-size: 3.4rem; line-height: 1.04; margin: 0 0 10px 0; font-weight: 800; letter-spacing: -2px; color: var(--c-accent); text-shadow: 0 4px 24px rgba(0, 0, 0, 0.4); transition: color 0.15s ease-out; }
+        /* Desktop: Strict 2/3 and 1/3 Ratio */
+        .left-panel { 
+            position: sticky; top: 68px; height: calc(100vh - 84px); 
+            display: grid; grid-template-rows: 2fr 1fr; gap: 16px;
+            padding-bottom: 16px; 
+        }
+        
+        .hero-container { display: flex; flex-direction: column; justify-content: flex-start; min-height: 0; height: 100%; }
+        .hero-title { font-size: 3.4rem; line-height: 1.04; margin: 0 0 10px 0; font-weight: 800; letter-spacing: -2px; color: var(--c-accent); text-shadow: 0 4px 24px rgba(0, 0, 0, 0.4); transition: color 0.15s ease-out; overflow-wrap: break-word; }
         .hero-subtitle { font-size: 0.95rem; color: var(--text-muted); margin: 0 0 12px 0; }
 
-        .headline-card {
-            background: var(--card-surface); border: 1px solid var(--card-border); border-radius: 16px; padding: 22px 24px;
-            backdrop-filter: blur(18px); box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35); flex-grow: 1;
-            display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+        .headline-card { padding: 28px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; height: 100%; }
+        
+        #hero-headline { 
+            color: var(--text-main); font-size: 2.2rem; font-weight: 800; line-height: 1.15; 
+            border-left: 5px solid var(--c-accent); padding-left: 18px; margin-bottom: 14px; 
+            transition: color 0.15s; letter-spacing: -0.5px; overflow-wrap: break-word;
         }
-        .headline-card::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.02) 65%, var(--c-sweep) 100%);
-            transition: left 1.25s cubic-bezier(0.25, 1, 0.5, 1); z-index: 0;
-        }
-        .headline-card:hover { transform: translateX(-4px); border-color: rgba(255, 255, 255, 0.22); }
-        .headline-card:hover::before { left: 0; }
-        .headline-card:hover #hero-headline { color: var(--c-accent) !important; }
-        .headline-card > * { position: relative; z-index: 1; }
-        .headline-snippet { font-size: 13.5px; color: var(--text-muted); line-height: 1.6; margin: 0; padding-left: 20px; }
+        .headline-snippet { font-size: 14.5px; color: var(--text-main); opacity: 0.85; line-height: 1.6; margin: 0; padding-left: 23px; }
 
-        /* Read Later */
+        /* Read Later Bookmarks */
         .read-later-box {
-            flex: 1; min-height: 140px; background: var(--card-surface); border: 1px solid var(--card-border);
+            height: 100%;
+            background: var(--card-surface); border: 1px solid var(--card-border);
             border-radius: 14px; padding: 14px 18px; backdrop-filter: blur(20px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
-            display: flex; flex-direction: column; scroll-margin-top: 80px;
+            display: flex; flex-direction: column; scroll-margin-top: 80px; min-height: 140px;
         }
         .read-later-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 6px; margin-bottom: 6px; flex-shrink: 0; }
         .read-later-header span { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: var(--c-accent); }
-        
         #bookmarks-container { overflow-y: auto; padding-right: 4px; flex-grow: 1; display: flex; flex-direction: column; gap: 6px; }
         #bookmarks-container::-webkit-scrollbar { width: 4px; }
         #bookmarks-container::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
@@ -274,24 +266,30 @@
         .bookmark-item {
             display: flex; justify-content: space-between; align-items: center; padding: 8px 12px;
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px; min-height: 38px; position: relative; overflow: hidden; transition: transform 0.25s ease, border-color 0.25s ease;
+            border-radius: 8px; min-height: 38px; position: relative; overflow: hidden; 
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
         }
         .bookmark-item::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.02) 65%, var(--c-sweep) 100%);
-            transition: left 0.8s cubic-bezier(0.25, 1, 0.5, 1); z-index: 0;
+            content: ''; position: absolute; inset: 0;
+            background: color-mix(in srgb, var(--c-sweep) 40%, rgba(255,255,255,0.08)); 
+            transform: scaleX(0); transform-origin: center;
+            transition: transform 0.65s ease-in-out;
+            z-index: 0; pointer-events: none;
         }
-        .bookmark-item:hover { transform: translateX(4px); border-color: rgba(255, 255, 255, 0.2); }
-        .bookmark-item:hover::before { left: 0; }
-        .bookmark-title { font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 86%; color: #cbd5e1; text-decoration: none; position: relative; z-index: 1; }
-        .bookmark-title:hover { color: #ffffff; }
+        .bookmark-item:hover { 
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 12px rgba(255, 255, 255, 0.05); 
+        }
+        .bookmark-item:hover::before { transform: scaleX(1); }
+        .bookmark-title { font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 86%; color: #cbd5e1; text-decoration: none; position: relative; z-index: 1; transition: color 0.2s;}
+        .bookmark-item:hover .bookmark-title { color: var(--day-accent); }
         .remove-btn { background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 14px; transition: color 0.15s, transform 0.15s; position: relative; z-index: 1; }
         .remove-btn:hover { color: #ef4444; transform: scale(1.2); }
 
         /* --- RIGHT COLUMN & WIDGETS --- */
         .right-panel { position: relative; display: flex; flex-direction: column; gap: 24px; padding-top: 10px; padding-bottom: 120px; }
 
-        /* Course Comparator Widget */
+        /* Course Finder Widget */
         .course-comparator-box {
             background: var(--card-surface); border: 1px solid var(--card-border); border-radius: 16px;
             padding: 20px; backdrop-filter: blur(18px); box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25); position: relative;
@@ -299,25 +297,32 @@
         .course-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
         .course-title { font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: var(--c-accent); margin: 0; }
         
-        .course-select {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: var(--text-main);
-            padding: 6px 12px; border-radius: 8px; font-size: 12px; outline: none; cursor: pointer;
+        .course-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 14px; 
+            max-height: 320px; 
+            overflow-y: auto; 
+            overflow-x: hidden;
+            padding: 6px 4px;
         }
-        .course-select:focus { border-color: var(--c-accent); }
-        .course-select option { background: #0b0e1a; color: #f8fafc; } /* Fix for white text on white background */
-
-        .course-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .course-card-link { text-decoration: none; color: inherit; display: block; }
-        .course-card {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px;
-            padding: 14px; transition: transform 0.2s, border-color 0.2s; display: flex; flex-direction: column; justify-content: space-between; height: 100%;
-        }
-        .course-card-link:hover .course-card { transform: translateY(-3px); border-color: rgba(255, 255, 255, 0.2); }
-        .course-type { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 50px; display: inline-block; margin-bottom: 8px; }
+        .course-grid::-webkit-scrollbar { width: 4px; }
+        .course-grid::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+        .course-card { padding: 14px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; }
+        
+        /* Fixed to 1 / -1 so it never forces phantom 2nd column on single-column layouts */
+        .trending-header { grid-column: 1 / -1; font-size: 11px; font-weight: 700; color: #fbbf24; letter-spacing: 1px; text-transform: uppercase; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+        
+        .course-meta-tags { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+        .course-type { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 50px; }
+        .course-lvl { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 50px; background: rgba(255,255,255,0.08); color: #cbd5e1; }
+        
         .type-free { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
         .type-paid { background: rgba(234, 179, 8, 0.15); color: #facc15; }
+        .type-cert { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+        .type-degree { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        
         .course-name { font-size: 13.5px; font-weight: 600; color: var(--text-main); margin-bottom: 6px; line-height: 1.3; transition: color 0.2s; }
-        .course-card-link:hover .course-name { color: var(--c-accent); }
         .course-provider { font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; margin-top: 8px;}
 
         /* Github Carousel */
@@ -329,95 +334,131 @@
         .carousel-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .github-title { font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: var(--c-accent); margin: 0; }
         .carousel-nav { display: flex; align-items: center; gap: 8px; }
-        .nav-arrow { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--card-border); color: var(--text-main); width: 26px; height: 26px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.2s; }
-        .nav-arrow:hover { background: var(--c-accent); color: #0b0e17; border-color: var(--c-accent); }
+        .nav-arrow { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--card-border); color: var(--text-main); width: 26px; height: 26px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
         .repo-slide-stage { min-height: 75px; position: relative; overflow: hidden; }
         .repo-card-single { display: flex; flex-direction: column; }
         .slide-in-right { animation: slideRight 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .slide-in-left { animation: slideLeft 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes slideLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
-        .repo-name { font-size: 14px; font-weight: 700; color: var(--text-main); text-decoration: none; }
-        .repo-name:hover { color: var(--c-accent); }
+        .repo-name { font-size: 14px; font-weight: 700; color: var(--text-main); text-decoration: none; transition: color 0.2s; }
+        .repo-name:hover { color: var(--day-accent); }
         .repo-stars { font-size: 11px; color: #fbbf24; font-weight: 700; margin-left: 8px; }
         .repo-desc { font-size: 12px; color: var(--text-muted); margin: 6px 0 0 0; line-height: 1.45; }
         .carousel-indicators { display: flex; gap: 6px; margin-top: 10px; justify-content: center; }
         .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); transition: all 0.3s; }
         .dot.active { width: 18px; border-radius: 10px; background: var(--c-accent); }
 
+        /* News Calendar Archive */
+        .calendar-widget {
+            background: var(--card-surface); border: 1px solid var(--card-border); border-radius: 16px;
+            padding: 20px; backdrop-filter: blur(18px); box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+        }
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 8px; flex-wrap: wrap; }
+        .cal-title { font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: var(--c-accent); margin: 0; }
+        .cal-month-label { font-size: 12.5px; font-weight: 600; color: var(--text-main); white-space: nowrap; }
+        .cal-nav-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px; transition: color 0.2s; }
+        .cal-nav-btn:hover { color: var(--text-main); }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; font-size: 11px; }
+        .cal-day-name { font-weight: 700; color: var(--text-muted); padding-bottom: 8px; }
+        .cal-day { padding: 6px 0; border-radius: 6px; cursor: pointer; position: relative; transition: all 0.2s; color: var(--text-main); }
+        .cal-day:hover { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .cal-day.active { background: #fbbf24; color: #0b0e17; font-weight: 700; }
+        .has-news-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--c-accent); position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); }
+        .cal-day.active .has-news-dot { background: #0b0e17; }
+        .cal-day.empty { pointer-events: none; opacity: 0.25; cursor: default; }
+
         /* Filter Chips */
         .controls-row {
             display: flex; justify-content: space-between; align-items: center; background: var(--card-surface);
             padding: 8px 14px; border-radius: 50px; border: 1px solid var(--card-border); backdrop-filter: blur(18px);
+            gap: 10px;
         }
-        .chip-group { display: flex; gap: 6px; }
-        .chip { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: var(--text-muted); padding: 5px 14px; border-radius: 50px; font-size: 11.5px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-        .chip:hover { color: white; transform: scale(1.03); }
+        .chip-group { display: flex; gap: 6px; flex-wrap: wrap; }
+        .chip { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: var(--text-muted); padding: 5px 14px; border-radius: 50px; font-size: 11.5px; font-weight: 500; cursor: pointer; }
         .chip.active { background: var(--c-accent); border-color: var(--c-accent); color: #0b0e17; font-weight: 700; }
 
         /* News Cards */
         .news-list { display: flex; flex-direction: column; gap: 18px; }
-        .news-card-link { text-decoration: none; color: inherit; display: block; }
-        .news-card {
-            background: var(--card-surface); border: 1px solid var(--card-border); border-radius: 16px; padding: 22px 24px;
-            position: relative; backdrop-filter: blur(20px); overflow: hidden; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-        .news-card::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.02) 65%, var(--c-sweep) 100%);
-            transition: left 1.25s cubic-bezier(0.25, 1, 0.5, 1); z-index: 0;
-        }
-        .news-card-link:hover .news-card { transform: translateX(-6px); border-color: rgba(255, 255, 255, 0.22); }
-        .news-card-link:hover .news-card::before { left: 0; }
-        .news-card > * { position: relative; z-index: 1; }
-
+        .news-card { padding: 22px 24px; position: relative; }
+        
         .tag-badge { font-size: 9.5px; font-weight: 700; background: rgba(255, 255, 255, 0.08); padding: 3px 9px; border-radius: 50px; display: inline-block; margin-bottom: 10px; letter-spacing: 0.5px; }
-        .news-title { margin: 0 0 8px 0; font-size: 1.18rem; line-height: 1.35; color: var(--text-main); transition: color 0.15s; }
-        .news-card-link:hover .news-title { color: var(--c-accent); }
+        
+        /* Padding-right prevents collision with the Save button on small screens */
+        .news-title { margin: 0 0 8px 0; font-size: 1.18rem; line-height: 1.35; color: var(--text-main); transition: color 0.2s; padding-right: 64px; }
         .news-desc { font-size: 12.5px; color: var(--text-muted); margin: 0 0 12px 0; line-height: 1.5; }
         .news-meta { font-size: 11.5px; color: var(--c-accent); font-weight: 600; }
+        
         .card-save-btn {
             position: absolute; top: 18px; right: 18px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.15);
-            color: var(--text-main); border-radius: 50px; cursor: pointer; font-size: 10.5px; font-weight: 600; padding: 4px 12px; transition: all 0.2s; z-index: 2;
+            color: var(--text-main); border-radius: 50px; cursor: pointer; font-size: 10.5px; font-weight: 600; padding: 4px 12px; z-index: 2;
         }
-        .card-save-btn:hover { background: #ffffff; color: #0b0e17; transform: scale(1.04); }
 
         .error-card { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; padding: 14px; border-radius: 12px; font-size: 12.5px; display: none; }
 
-        /* --- RESPONSIVE MOBILE & TABLET LAYOUT (< 960px) --- */
+        /* --- RESPONSIVE MOBILE & MINIMIZED WINDOW LAYOUT (< 960px) --- */
         @media (max-width: 960px) {
             body { padding: 0 3%; }
-            .navbar { flex-direction: row; justify-content: space-between; gap: 10px; border-radius: 50px; padding: 6px 14px; }
-            .search-container { width: 45%; max-width: 180px; height: 30px; }
-            .search-container:focus-within { width: 55%; }
-            .workspace { grid-template-columns: 1fr; gap: 28px; }
-            .left-panel { position: static; height: auto; padding-bottom: 0; }
+            .navbar { border-radius: 50px; padding: 6px 14px; }
+            .search-container { width: 160px; height: 30px; }
+            .search-container:focus-within { width: 190px; }
+            
+            .workspace { grid-template-columns: 1fr; gap: 32px; }
+            
+            /* CRITICAL FIX: Forces stacked column rather than side-by-side row on minimized windows */
+            .left-panel { 
+                position: static; 
+                height: auto; 
+                padding-bottom: 0; 
+                display: flex !important; 
+                flex-direction: column !important; 
+                gap: 20px; 
+            }
+            
             .hero-title { font-size: 2.5rem; letter-spacing: -1px; }
-            .headline-card { padding: 18px; min-height: auto; }
-            #hero-headline { font-size: 1.3rem !important; }
-            .read-later-box { max-height: 220px; }
+            .headline-card { padding: 22px 20px; min-height: auto; }
+            #hero-headline { font-size: 1.7rem !important; }
+            
+            .read-later-box { 
+                height: auto; 
+                min-height: 140px; 
+                max-height: 240px; 
+            }
+            
             .right-panel { padding-top: 0; padding-bottom: 60px; }
-            .moon-wrapper { width: 320px; height: 320px; top: -160px; }
-            .sun-wrapper { width: 360px; height: 360px; bottom: -220px; }
-            .course-grid { grid-template-columns: 1fr; }
+            
+            .celestial-stage { width: 800px; height: 800px; bottom: -300px; margin-left: -400px; }
+            .moon-wrapper { top: -160px; left: calc(50% - 160px); width: 320px; height: 320px; }
+            .sun-wrapper { bottom: -180px; left: calc(50% - 180px); width: 360px; height: 360px; }
         }
 
-        @media (max-width: 480px) {
+        /* Tablet to Small Mobile Breakpoint (< 620px) */
+        @media (max-width: 620px) {
+            .course-grid { grid-template-columns: 1fr; }
+            .controls-row { flex-direction: column; align-items: flex-start; border-radius: 20px; padding: 12px; gap: 10px; }
+            .chip-group { width: 100%; justify-content: flex-start; }
+        }
+
+        /* Ultra-compact Phones (< 440px) */
+        @media (max-width: 440px) {
+            body { padding: 0 2.5%; }
             .navbar { padding: 6px 12px; }
-            .nav-brand { font-size: 0.95rem; }
-            .search-container { width: 44%; }
-            .hero-title { font-size: 2rem; }
-            .controls-row { flex-direction: column; gap: 8px; border-radius: 20px; padding: 10px; }
-            .chip-group { width: 100%; justify-content: space-between; }
-            .chip { padding: 4px 10px; font-size: 10.5px; }
+            .nav-brand { font-size: 0.92rem; gap: 8px; }
+            .search-container { width: 120px; padding: 0 8px; }
+            .search-container:focus-within { width: 145px; }
+            .hero-title { font-size: 1.95rem; }
+            #hero-headline { font-size: 1.35rem !important; }
+            .headline-snippet { font-size: 13px; }
+            .chip { padding: 4px 10px; font-size: 10px; }
+            .news-title { font-size: 1.05rem; padding-right: 56px; }
+            .cal-header { justify-content: center; }
         }
 
         /* --- ACCESSIBILITY --- */
         @media (prefers-reduced-motion: reduce) {
             *, ::before, ::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
             .stars-canvas-1, .stars-canvas-2, .shooting-star { display: none; }
-            .celestial-wheel { animation: none; }
+            .celestial-wheel, .celestial-stage { animation: none; transform: none !important; }
         }
     </style>
 </head>
@@ -442,9 +483,12 @@
     <div class="stars-canvas-2"></div>
     <div id="shooting-star-container"></div>
 
-    <!-- CELESTIAL BODIES & HORIZON -->
-    <div class="moon-wrapper"><div class="moon-halo"></div><div class="moon-core"></div></div>
-    <div class="sun-wrapper"><div class="sun-halo"></div><div class="sun-core"></div></div>
+    <!-- REALISTIC ORBITAL BACKGROUND -->
+    <div class="celestial-stage">
+        <div class="moon-wrapper"><div class="moon-halo"></div><div class="moon-core"></div></div>
+        <div class="sun-wrapper"><div class="sun-halo"></div><div class="sun-core"></div></div>
+    </div>
+    
     <div class="dissolve-horizon"></div>
 
     <!-- NAVBAR -->
@@ -458,7 +502,7 @@
                 <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <input type="text" id="search-input" class="search-bar" autocomplete="off" spellcheck="false">
+                <input type="text" id="search-input" class="search-bar" autocomplete="off" spellcheck="false" placeholder="Search news...">
             </div>
         </nav>
     </header>
@@ -471,9 +515,14 @@
             <div class="hero-container">
                 <h1 class="hero-title">Crafting narrative<br>through tech.</h1>
                 <p class="hero-subtitle">The biggest story in the industry right now:</p>
-                <div class="headline-card" id="headline-container">
-                    <!-- Injected via JS -->
-                </div>
+                
+                <a href="#" target="_blank" rel="noopener" class="card-link-wrapper" id="headline-wrapper">
+                    <div class="headline-card book-hover-card">
+                        <div id="hero-headline">Loading breaking news...</div>
+                        <p id="hero-snippet" class="headline-snippet"></p>
+                    </div>
+                </a>
+                
                 <div id="error-box" class="error-card" style="margin-top: 10px;"></div>
             </div>
 
@@ -489,43 +538,69 @@
         <!-- RIGHT PANEL -->
         <section class="right-panel">
 
-            <!-- WIDGET: Course Comparator -->
+            <!-- WIDGET: Enhanced Course Finder -->
             <div class="course-comparator-box">
-                <div class="course-header">
-                    <h3 class="course-title">Orbital Academy: Course Matrix</h3>
-                    <select class="course-select" id="course-topic-select" onchange="loadCourses()">
-                        <option value="dsa">Data Structures & Algorithms</option>
-                        <option value="java">Java Programming</option>
-                        <option value="python">Python Programming</option>
-                        <option value="ruby">Ruby / Processing</option>
-                        <option value="js">JavaScript / Web</option>
-                    </select>
+                <div class="course-header" style="flex-direction: column; align-items: flex-start; gap: 12px;">
+                    <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                        <h3 class="course-title">Orbital Academy: Course Finder</h3>
+                        <span style="font-size: 10px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">Accredited & Open</span>
+                    </div>
+                    
+                    <div class="search-container" style="width: 100%; height: 36px; background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1);">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="course-search-input" class="search-bar" style="color: #fff;" placeholder="Search DSA, Wireless, Java, Master's..." autocomplete="off">
+                    </div>
                 </div>
+                
                 <div class="course-grid" id="course-grid">
                     <!-- Courses Injected Here -->
+                </div>
+                
+                <div id="course-web-fallback" style="display: none; margin-top: 16px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
+                    <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 8px 0;">Want to explore more accredited options?</p>
+                    <a id="web-search-btn" href="#" target="_blank" rel="noopener" class="mentor-btn eclipse-btn" style="text-decoration: none; display: inline-block; background: rgba(255,255,255,0.08); padding: 8px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+                        Search Web Aggregator ↗
+                    </a>
                 </div>
             </div>
 
             <!-- WIDGET: Github Carousel -->
-            <div class="github-carousel-box" id="repo-carousel-container">
+            <div class="github-carousel-box">
                 <div class="carousel-top">
                     <div class="github-title">Trending Github Repositories</div>
                     <div class="carousel-nav">
-                        <button class="nav-arrow" onclick="shiftRepo(-1, 'left')" title="Previous">‹</button>
-                        <button class="nav-arrow" onclick="shiftRepo(1, 'right')" title="Next">›</button>
+                        <button class="nav-arrow eclipse-btn" onclick="shiftRepo(-1, 'left')" title="Previous">‹</button>
+                        <button class="nav-arrow eclipse-btn" onclick="shiftRepo(1, 'right')" title="Next">›</button>
                     </div>
                 </div>
                 <div class="repo-slide-stage" id="carousel-stage">Loading repositories...</div>
                 <div class="carousel-indicators" id="carousel-dots"></div>
             </div>
 
+            <!-- WIDGET: News Calendar Archive -->
+            <div class="calendar-widget">
+                <div class="cal-header">
+                    <h3 class="cal-title">News Archive Planner</h3>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <button class="cal-nav-btn eclipse-btn" style="border-radius: 4px; padding: 2px 6px;" onclick="changeMonth(-1)">◀</button>
+                        <span class="cal-month-label" id="cal-month-label">September 2026</span>
+                        <button class="cal-nav-btn eclipse-btn" style="border-radius: 4px; padding: 2px 6px;" onclick="changeMonth(1)">▶</button>
+                    </div>
+                </div>
+                <div class="cal-grid" id="cal-grid">
+                    <!-- Calendar Injected Here -->
+                </div>
+            </div>
+
             <!-- Feed Controls -->
             <div class="controls-row">
                 <div class="chip-group">
-                    <button class="chip active" onclick="setCategory('all', this)">All</button>
-                    <button class="chip" onclick="setCategory('ai', this)">AI</button>
-                    <button class="chip" onclick="setCategory('cloud', this)">Cloud</button>
-                    <button class="chip" onclick="setCategory('hardware', this)">Hardware</button>
+                    <button class="chip active eclipse-btn" onclick="setCategory('all', this)">All</button>
+                    <button class="chip eclipse-btn" onclick="setCategory('ai', this)">AI</button>
+                    <button class="chip eclipse-btn" onclick="setCategory('cloud', this)">Cloud</button>
+                    <button class="chip eclipse-btn" onclick="setCategory('hardware', this)">Hardware</button>
                 </div>
                 <span id="feed-status" style="font-size: 11px; color: var(--text-muted);">Real-time</span>
             </div>
@@ -573,62 +648,91 @@
         }
         setTimeout(launchShootingStar, 1500);
 
-        // --- 3. Orbital Academy: Course Data Engine ---
-        const courseDB = {
-            dsa: [
-                { type: 'Free', class: 'type-free', title: 'MIT 6.006: Intro to Algorithms', provider: 'MIT OpenCourseWare', url: 'https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/' },
-                { type: 'Visual', class: 'type-paid', title: 'Grokking Algorithms', provider: 'Manning Publications', url: 'https://www.manning.com/books/grokking-algorithms-second-edition' }
-            ],
-            java: [
-                { type: 'Free', class: 'type-free', title: 'MOOC.fi: Object-Oriented Java', provider: 'Univ. of Helsinki', url: 'https://java-programming.mooc.fi/' },
-                { type: 'Ref', class: 'type-paid', title: 'Effective Java (3rd Edition)', provider: 'Joshua Bloch', url: 'https://www.oreilly.com/library/view/effective-java-3rd/9780134686097/' }
-            ],
-            python: [
-                { type: 'Free', class: 'type-free', title: 'CS50P: Programming with Python', provider: 'HarvardX', url: 'https://cs50.harvard.edu/python/' },
-                { type: 'Paid', class: 'type-paid', title: 'Automate the Boring Stuff', provider: 'Al Sweigart', url: 'https://automatetheboringstuff.com/' }
-            ],
-            ruby: [
-                { type: 'Free', class: 'type-free', title: 'The Odin Project: Ruby Path', provider: 'Open Source', url: 'https://www.theodinproject.com/paths/full-stack-ruby-on-rails' },
-                { type: 'Visual', class: 'type-free', title: 'Processing Interactive Tutorials', provider: 'Processing.org', url: 'https://processing.org/tutorials' }
-            ],
-            js: [
-                { type: 'Free', class: 'type-free', title: 'JavaScript Algorithms & DSA', provider: 'freeCodeCamp', url: 'https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures-v8/' },
-                { type: 'Deep', class: 'type-paid', title: 'Just JavaScript', provider: 'Dan Abramov', url: 'https://justjavascript.com/' }
-            ]
-        };
+        // --- 3. Enhanced Orbital Academy Data Engine ---
+        const courseDB = [
+            { title: 'Data Structures and Algorithms Specialization', provider: 'UC San Diego / Coursera', type: 'Univ. Cert', class: 'type-cert', level: 'Intermediate', time: '4 Months', url: 'https://www.coursera.org/specializations/data-structures-algorithms', tags: 'dsa algorithms java python sorting trees quicksort mergesort', trending: false },
+            { title: 'Wireless Communications for Everybody', provider: 'Yonsei University', type: 'Free Audit', class: 'type-free', level: 'Beginner', time: '6 Weeks', url: 'https://www.coursera.org/learn/wireless-communications', tags: 'wireless signal processing hardware telecommunications', trending: false },
+            { title: 'Online Master of Science in Computer Science (OMSCS)', provider: 'Georgia Tech', type: 'Degree', class: 'type-degree', level: 'Master\'s', time: '2-3 Years', url: 'https://omscs.gatech.edu/', tags: 'masters degree graduate ai software computing', trending: true },
+            { title: 'Object Oriented Programming in Java', provider: 'Duke University', type: 'Univ. Cert', class: 'type-cert', level: 'Beginner', time: '5 Months', url: 'https://www.coursera.org/specializations/object-oriented-programming', tags: 'java oop software development', trending: false },
+            { title: 'Deep Learning Specialization', provider: 'DeepLearning.AI', type: 'Prof. Cert', class: 'type-paid', level: 'Advanced', time: '3 Months', url: 'https://www.coursera.org/specializations/deep-learning', tags: 'ai machine learning neural networks python', trending: true },
+            { title: 'Processing Interactive Tutorials', provider: 'Processing.org', type: 'Free', class: 'type-free', level: 'Beginner', time: 'Self-Paced', url: 'https://processing.org/tutorials', tags: 'ruby processing visual graphics coding', trending: false },
+            { title: 'CS50: Introduction to Computer Science', provider: 'Harvard University / edX', type: 'Univ. Credit', class: 'type-cert', level: 'Beginner', time: '12 Weeks', url: 'https://www.edx.org/course/introduction-computer-science-harvardx-cs50x', tags: 'python c algorithms web free', trending: true }
+        ];
 
-        function loadCourses() {
-            const topic = document.getElementById('course-topic-select').value;
-            const courses = courseDB[topic];
+        function renderCourseGrid(courses, isDefaultView = false) {
             const grid = document.getElementById('course-grid');
+            const fallback = document.getElementById('course-web-fallback');
+            const searchInput = document.getElementById('course-search-input');
+            const searchVal = searchInput ? searchInput.value.trim() : '';
+            
             grid.innerHTML = '';
-            courses.forEach(c => {
-                grid.innerHTML += `
-                    <a href="${c.url}" target="_blank" rel="noopener" class="course-card-link">
-                        <div class="course-card">
-                            <div>
-                                <span class="course-type ${c.class}">${c.type}</span>
-                                <div class="course-name">${c.title}</div>
+            
+            if (isDefaultView && courses.length > 0) {
+                grid.innerHTML += `<div class="trending-header"><span>🔥</span> Trending This Week</div>`;
+            }
+            
+            if (courses.length === 0) {
+                grid.innerHTML = '<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 12px; grid-column: 1 / -1;">No local courses found. Click below to search the web!</div>';
+            } else {
+                courses.forEach(c => {
+                    grid.innerHTML += `
+                        <a href="${c.url}" target="_blank" rel="noopener" class="card-link-wrapper">
+                            <div class="course-card book-hover-card">
+                                <div>
+                                    <div class="course-meta-tags">
+                                        <span class="course-type ${c.class}">${c.type}</span>
+                                        <span class="course-lvl">⚡ ${c.level}</span>
+                                    </div>
+                                    <div class="course-name">${c.title}</div>
+                                </div>
+                                <div class="course-provider">
+                                    <span>🎓 ${c.provider}</span>
+                                    <span style="font-size: 11px;">⏱ ${c.time}</span>
+                                </div>
                             </div>
-                            <div class="course-provider">
-                                <span>🎓 ${c.provider}</span>
-                                <span style="font-size: 14px;">→</span>
-                            </div>
-                        </div>
-                    </a>
-                `;
-            });
+                        </a>
+                    `;
+                });
+            }
+
+            if (searchVal.length > 0) {
+                fallback.style.display = 'block';
+                const webBtn = document.getElementById('web-search-btn');
+                webBtn.href = `https://www.classcentral.com/search?q=${encodeURIComponent(searchVal)}`;
+                webBtn.innerText = `Search web for "${searchVal}" ↗`;
+            } else {
+                fallback.style.display = 'none';
+            }
         }
 
-        // --- 4. News & Repos State ---
+        document.getElementById('course-search-input').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            if (query === '') {
+                const trendingCourses = courseDB.filter(c => c.trending);
+                renderCourseGrid(trendingCourses, true);
+                return;
+            }
+            const filtered = courseDB.filter(c => 
+                c.title.toLowerCase().includes(query) || 
+                c.tags.includes(query) ||
+                c.provider.toLowerCase().includes(query)
+            );
+            renderCourseGrid(filtered, false);
+        });
+
+        // --- 4. Global State ---
         let allArticles = [];
         let activeCategory = 'all';
         let repos = [];
         let currentRepoIdx = 0;
         let carouselTimer = null;
+        
+        let calCurrentDate = new Date();
+        let calSelectedDateStr = null;
 
+        // --- 5. Network Fetching ---
         async function fetchNews() {
-            const response = await fetch('https://dev.to/api/articles?tags=cloud,hardware,ai,software&per_page=14');
+            const response = await fetch('https://dev.to/api/articles?tags=cloud,hardware,ai,software&per_page=100');
             if (!response.ok) throw new Error("HTTP error " + response.status);
             allArticles = await response.json();
             if (!allArticles.length) throw new Error("No articles received.");
@@ -636,14 +740,12 @@
             const heroItem = allArticles[0];
             const safeSnippet = heroItem.description ? (heroItem.description.length > 175 ? heroItem.description.substring(0, 172) + '...' : heroItem.description) : 'Click headline to read full journalistic coverage.';
             
-            document.getElementById('headline-container').innerHTML = `
-                <a href="${heroItem.url}" target="_blank" rel="noopener" style="text-decoration: none; color: inherit; display: block; position: relative; z-index: 1;">
-                    <div id="hero-headline" style="color: var(--text-main); font-size: 1.55rem; font-weight: 700; line-height: 1.25; border-left: 4px solid var(--c-accent); padding-left: 16px; margin-bottom: 12px; transition: color 0.15s;">
-                        ${heroItem.title}
-                    </div>
-                    <p id="hero-snippet" class="headline-snippet">${safeSnippet}</p>
-                </a>
-            `;
+            const wrapper = document.getElementById('headline-wrapper');
+            wrapper.href = heroItem.url;
+            document.getElementById('hero-headline').innerText = heroItem.title;
+            document.getElementById('hero-snippet').innerText = safeSnippet;
+            
+            renderCalendar();
             applyFilter();
         }
 
@@ -681,24 +783,72 @@
         function startCarouselAuto() { carouselTimer = setInterval(() => shiftRepo(1, 'right'), 5500); }
         function resetCarouselTimer() { clearInterval(carouselTimer); startCarouselAuto(); }
 
-        // --- 5. Feed Filtering & Rendering ---
+        // --- 6. Calendar Archive ---
+        function renderCalendar() {
+            const grid = document.getElementById('cal-grid');
+            const monthLabel = document.getElementById('cal-month-label');
+            
+            const month = calCurrentDate.getMonth();
+            const year = calCurrentDate.getFullYear();
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            monthLabel.innerText = `${monthNames[month]} ${year}`;
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            const activeDates = new Set(allArticles.map(a => new Date(a.published_at).toDateString()));
+            
+            let html = '<div class="cal-day-name">Su</div><div class="cal-day-name">Mo</div><div class="cal-day-name">Tu</div><div class="cal-day-name">We</div><div class="cal-day-name">Th</div><div class="cal-day-name">Fr</div><div class="cal-day-name">Sa</div>';
+            
+            for(let i = 0; i < firstDay; i++) { html += `<div></div>`; }
+            
+            for(let i = 1; i <= daysInMonth; i++) {
+                const thisDateStr = new Date(year, month, i).toDateString();
+                const hasNews = activeDates.has(thisDateStr);
+                const isActive = calSelectedDateStr === thisDateStr ? 'active' : '';
+                const emptyClass = !hasNews && !isActive ? 'empty' : '';
+                
+                html += `
+                    <div class="cal-day ${isActive} ${emptyClass}" onclick="${hasNews || isActive ? `toggleCalDate('${thisDateStr}')` : ''}">
+                        ${i}
+                        ${hasNews ? '<div class="has-news-dot"></div>' : ''}
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+        }
+
+        function changeMonth(step) { calCurrentDate.setMonth(calCurrentDate.getMonth() + step); renderCalendar(); }
+        function toggleCalDate(dateStr) { calSelectedDateStr = calSelectedDateStr === dateStr ? null : dateStr; renderCalendar(); applyFilter(); }
+
+        // --- 7. Feed Filtering ---
         function renderNews(articles) {
             const container = document.getElementById('news-container');
             container.innerHTML = '';
-            if (!articles.length) { container.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted);font-size:13px;">No matching articles found.</div>'; return; }
+            
+            if (!articles.length) { 
+                container.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted);font-size:13px;">No matching articles found for this filter/date.</div>'; 
+                return; 
+            }
 
             articles.forEach(article => {
                 const readTime = Math.ceil((article.description ? article.description.length * 4 : 450) / 238);
                 const tag = article.tags.split(',')[0] || 'TECH';
                 const safeTitle = article.title.replace(/'/g, "\\'");
+                const dateObj = new Date(article.published_at);
+                const dateDisplay = `${dateObj.toLocaleString('default', { month: 'short' })} ${dateObj.getDate()}`;
+
                 container.innerHTML += `
-                    <a href="${article.url}" target="_blank" rel="noopener" class="news-card-link">
-                        <article class="news-card">
+                    <a href="${article.url}" target="_blank" rel="noopener" class="card-link-wrapper">
+                        <article class="news-card book-hover-card">
                             <span class="tag-badge">${tag.toUpperCase()}</span>
-                            <button class="card-save-btn" onclick="event.preventDefault(); saveBookmark('${article.id}', '${safeTitle}', '${article.url}')">Save</button>
+                            <button class="card-save-btn eclipse-btn" onclick="event.preventDefault(); saveBookmark('${article.id}', '${safeTitle}', '${article.url}')">Save</button>
                             <h2 class="news-title">${article.title}</h2>
                             <p class="news-desc">${article.description || 'Click to read full coverage on this developing story.'}</p>
-                            <span class="news-meta">⏱ ${readTime} min read</span>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+                                <span class="news-meta">⏱ ${readTime} min read</span>
+                                <span style="font-size: 11px; color: var(--text-muted);">📅 ${dateDisplay}</span>
+                            </div>
                         </article>
                     </a>
                 `;
@@ -712,12 +862,19 @@
 
         function applyFilter() {
             const query = document.getElementById('search-input').value.toLowerCase().trim();
-            const filtered = allArticles.slice(1).filter(a => (a.title.toLowerCase().includes(query) || a.tags.toLowerCase().includes(query)) && (activeCategory === 'all' || a.tags.toLowerCase().includes(activeCategory)));
+            const filtered = allArticles.slice(1).filter(a => {
+                const matchesSearch = a.title.toLowerCase().includes(query) || a.tags.toLowerCase().includes(query);
+                const matchesCat = activeCategory === 'all' || a.tags.toLowerCase().includes(activeCategory);
+                const matchesDate = calSelectedDateStr ? new Date(a.published_at).toDateString() === calSelectedDateStr : true;
+                return matchesSearch && matchesCat && matchesDate;
+            });
             renderNews(filtered);
         }
-        document.getElementById('search-input').addEventListener('input', applyFilter);
+        
+        let debounceTimer;
+        document.getElementById('search-input').addEventListener('input', () => { clearTimeout(debounceTimer); debounceTimer = setTimeout(() => applyFilter(), 300); });
 
-        // --- 6. Bookmarks ---
+        // --- 8. Bookmarks ---
         window.saveBookmark = function(id, title, url) {
             let list = JSON.parse(localStorage.getItem('eterna_bookmarks')) || [];
             if (!list.some(b => b.id === id)) { list.push({ id, title, url }); localStorage.setItem('eterna_bookmarks', JSON.stringify(list)); loadBookmarks(); }
@@ -736,7 +893,7 @@
             container.innerHTML = '';
             list.forEach(b => {
                 container.innerHTML += `
-                    <div class="bookmark-item">
+                    <div class="bookmark-item book-hover-card" style="padding: 10px 14px;">
                         <a href="${b.url}" target="_blank" rel="noopener" class="bookmark-title" title="${b.title}">${b.title}</a>
                         <button class="remove-btn" onclick="removeBookmark('${b.id}')" title="Remove">✕</button>
                     </div>
@@ -744,9 +901,12 @@
             });
         }
 
-        // --- 7. Init ---
+        // --- 9. Initialization ---
         document.addEventListener('DOMContentLoaded', async () => {
-            loadBookmarks(); loadCourses();
+            loadBookmarks(); 
+            const trendingCourses = courseDB.filter(c => c.trending);
+            renderCourseGrid(trendingCourses, true);
+            
             const splashTimer = new Promise(resolve => setTimeout(resolve, 3200));
             const newsPromise = fetchNews().catch(err => { document.getElementById('error-box').style.display = 'block'; document.getElementById('error-box').innerText = `News feed unavailable: ${err.message}`; });
             const githubPromise = fetchGitHub();
